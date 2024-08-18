@@ -38,10 +38,13 @@ jobs:
       #     echo "ACTIONS_CACHE_URL: $ACTIONS_CACHE_URL"
 
       - name: JWT Payload
+        shell: bash
         run: |
+          echo "Extracting JWT payload"
           # Extract the payload from ACTIONS_RUNTIME_TOKEN
           jwt_payload=$(echo $ACTIONS_RUNTIME_TOKEN | cut -d. -f2)
           decoded_payload=$(echo $jwt_payload | base64 -d | jq)
+          echo "Decoded JWT payload:"
           echo $decoded_payload
       
       - name: Setup tmate session
