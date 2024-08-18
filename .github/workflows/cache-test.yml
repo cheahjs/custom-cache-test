@@ -36,6 +36,11 @@ jobs:
       #     ACTIONS_CACHE_URL: https://cache-2
       #   run: |
       #     echo "ACTIONS_CACHE_URL: $ACTIONS_CACHE_URL"
+
+      - name: JWT Payload
+        run: |
+          # Extract the payload from ACTIONS_RUNTIME_TOKEN
+          echo $ACTIONS_RUNTIME_TOKEN | cut -d. -f2 | base64 -d | jq
       
       - name: Setup tmate session
         if: ${{ github.event.inputs.runner != 'self-hosted' }}
@@ -44,12 +49,3 @@ jobs:
         with:
           limit-access-to-actor: true
 
-      - name: Sleep
-        if: ${{ github.event.inputs.runner == 'self-hosted' }}
-        timeout-minutes: 30
-        shell: bash
-        run:
-          for i in $(seq 1 1800); do
-            echo "Sleep $i"
-            sleep 1
-          done
