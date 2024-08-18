@@ -16,26 +16,30 @@ jobs:
       # - name: Checkout
       #   uses: actions/checkout@v4
 
-      # - name: Test ACTION_CACHE_URL override pre
-      #   env:
-      #     ACTIONS_CACHE_URL: https://cache-1
-      #   run: |
-      #     echo "ACTIONS_CACHE_URL: $ACTIONS_CACHE_URL"
+      - name: Test ACTION_CACHE_URL override pre
+        env:
+          ACTIONS_CACHE_URL: https://cache-pre
+        uses: actions/github-script@v7
+        with:
+          script: |
+            console.log(`ACTIONS_CACHE_URL: ${process.env.ACTIONS_CACHE_URL}`);
 
-      # - name: Overwrite Runner
-      #   shell: bash
-      #   run: |
-      #     # Find path to runner file (~/runners/<version>/bin/Runner.Worker.dll)
-      #     RUNNER_PATH=$(find ~/ -type f -name Runner.Worker.dll | head -n 1)
-      #     echo "Runner.Worker.dll path: $RUNNER_PATH"
-      #     # Overwrite ACTIONS_CACHE_URL with ACTION_CACHES_ORL
-      #     sed -i 's/\x41\x00\x43\x00\x54\x00\x49\x00\x4F\x00\x4E\x00\x53\x00\x5F\x00\x43\x00\x41\x00\x43\x00\x48\x00\x45\x00\x5F\x00\x55\x00\x52\x00\x4C\x00/\x41\x00\x43\x00\x54\x00\x49\x00\x4F\x00\x4E\x00\x53\x00\x5F\x00\x43\x00\x41\x00\x43\x00\x48\x00\x45\x00\x5F\x00\x4F\x00\x52\x00\x4C\x00/g' "$RUNNER_PATH"
+      - name: Overwrite Runner
+        shell: bash
+        run: |
+          # Find path to runner file (~/runners/<version>/bin/Runner.Worker.dll)
+          RUNNER_PATH=$(find ~/ -type f -name Runner.Worker.dll | head -n 1)
+          echo "Runner.Worker.dll path: $RUNNER_PATH"
+          # Overwrite ACTIONS_CACHE_URL with ACTION_CACHES_ORL
+          sed -i 's/\x41\x00\x43\x00\x54\x00\x49\x00\x4F\x00\x4E\x00\x53\x00\x5F\x00\x43\x00\x41\x00\x43\x00\x48\x00\x45\x00\x5F\x00\x55\x00\x52\x00\x4C\x00/\x41\x00\x43\x00\x54\x00\x49\x00\x4F\x00\x4E\x00\x53\x00\x5F\x00\x43\x00\x41\x00\x43\x00\x48\x00\x45\x00\x5F\x00\x4F\x00\x52\x00\x4C\x00/g' "$RUNNER_PATH"
 
-      # - name: Test ACTION_CACHE_URL override post
-      #   env:
-      #     ACTIONS_CACHE_URL: https://cache-2
-      #   run: |
-      #     echo "ACTIONS_CACHE_URL: $ACTIONS_CACHE_URL"
+      - name: Test ACTION_CACHE_URL override post
+        env:
+          ACTIONS_CACHE_URL: https://cache-post
+        uses: actions/github-script@v7
+        with:
+          script: |
+            console.log(`ACTIONS_CACHE_URL: ${process.env.ACTIONS_CACHE_URL}`);
 
       - name: JWT Payload
         uses: actions/github-script@v7
