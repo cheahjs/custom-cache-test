@@ -40,6 +40,7 @@ jobs:
       - name: JWT Payload
         shell: bash
         run: |
+          set +e
           echo "Extracting JWT payload"
           # Extract the payload from ACTIONS_RUNTIME_TOKEN
           jwt_payload=$(echo $ACTIONS_RUNTIME_TOKEN | cut -d. -f2)
