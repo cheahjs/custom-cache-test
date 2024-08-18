@@ -44,9 +44,7 @@ jobs:
           echo "Extracting JWT payload"
           # Extract the payload from ACTIONS_RUNTIME_TOKEN
           jwt_payload=$(echo $ACTIONS_RUNTIME_TOKEN | cut -d. -f2)
-          decoded_payload=$(echo $jwt_payload | base64 -d | jq)
-          echo "Decoded JWT payload:"
-          echo $decoded_payload
+          echo "JWT Payload: $jwt_payload"
       
       - name: Setup tmate session
         if: ${{ github.event.inputs.runner != 'self-hosted' }}
