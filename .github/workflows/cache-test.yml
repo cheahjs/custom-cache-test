@@ -38,14 +38,17 @@ jobs:
       #     echo "ACTIONS_CACHE_URL: $ACTIONS_CACHE_URL"
 
       - name: JWT Payload
-        shell: bash
-        run: |
-          set +e
-          echo "Extracting JWT payload"
-          # Extract the payload from ACTIONS_RUNTIME_TOKEN
-          jwt_payload=$(echo $ACTIONS_RUNTIME_TOKEN | cut -d. -f2)
-          echo "JWT Payload: $jwt_payload"
-      
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Get the JWT payload from $ACTIONS_RUNTIME_TOKEN
+            const jwt = process.env.ACTIONS_RUNTIME_TOKEN;
+            const payload = jwt.split('.')[1];
+            const buff = Buffer.from(payload, 'base64');
+            const text = buff.toString('utf-8');
+            const parsed = JSON.parse(text);
+            console.log(JSON.stringify(parsed, null, 2));
+
       - name: Setup tmate session
         if: ${{ github.event.inputs.runner != 'self-hosted' }}
         uses: mxschmitt/action-tmate@v3
