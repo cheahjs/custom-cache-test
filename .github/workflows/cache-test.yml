@@ -38,7 +38,18 @@ jobs:
       #     echo "ACTIONS_CACHE_URL: $ACTIONS_CACHE_URL"
       
       - name: Setup tmate session
+        if: ${{ github.event.inputs.runner != 'self-hosted' }}
         uses: mxschmitt/action-tmate@v3
         timeout-minutes: 30
         with:
           limit-access-to-actor: true
+
+      - name: Sleep
+        if: ${{ github.event.inputs.runner == 'self-hosted' }}
+        timeout-minutes: 30
+        shell: bash
+        run:
+          for i in $(seq 1 1800); do
+            echo "Sleep $i"
+            sleep 1
+          done
